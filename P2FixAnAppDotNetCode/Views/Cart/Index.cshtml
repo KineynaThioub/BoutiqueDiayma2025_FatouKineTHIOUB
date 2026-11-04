@@ -16,9 +16,9 @@
             <tr>
                 <td class="text-center">@line.Quantity</td>
                 <td class="text-left">@line.Product.Name</td>
-                <td class="text-right">@line.Product.Price.ToString("c")</td>
+                <td class="text-right">@line.Product.Price.ToFcfa()</td>
                 <td class="text-right">
-                    @((line.Quantity * line.Product.Price).ToString("c"))
+                    @((line.Quantity * line.Product.Price).ToFcfa())
                 </td>
                 <td>
                     <form asp-action="RemoveFromCart" method="post">
@@ -36,13 +36,13 @@
         <tr>
             <td colspan="3" class="text-right">@Localizer["Total"]:</td>
             <td class="text-right">
-                @Model.GetTotalValue().ToString("c")
+                @Model.GetTotalValue().ToFcfa()
             </td>
         </tr>
         <tr>
             <td colspan="3" class="text-right">@Localizer["Average"]:</td>
             <td class="text-right">
-                @Model.GetAverageValue().ToString("c")
+                @Model.GetAverageValue().ToFcfa()
             </td>
         </tr>
     </tfoot>
