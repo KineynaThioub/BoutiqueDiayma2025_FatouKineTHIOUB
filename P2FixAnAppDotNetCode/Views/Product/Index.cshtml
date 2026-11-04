@@ -29,7 +29,7 @@
                 <tr>
                     <td>@p.Name</td>
                     <td>@p.Description</td>
-                    <td style="text-align:center">@p.Price.ToString("c")</td>
+                    <td style="text-align:center">@p.Price.ToFcfa()</td>
                     <td style="text-align:center">@p.Stock</td>
                     <td>
                         <form id="@p.Id" asp-action="AddToCart" asp-controller="Cart" method="post">

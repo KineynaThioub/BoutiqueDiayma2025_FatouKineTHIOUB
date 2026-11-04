@@ -2,6 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
+    <!-- BUG corrigé : l'assembly s'appelle "Diayma" mais les classes sont dans "P2FixAnAppDotNetCode" :
+         les traductions des classes C# (Order, OrderController) étaient introuvables. -->
+    <RootNamespace>P2FixAnAppDotNetCode</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -28,15 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Remove="Resources\Models\Order.en.resx" />
-  </ItemGroup>
-
-  <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.3" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Resources\Models\ViewModels\Order.en.resx" />
   </ItemGroup>
 
   <ItemGroup>
