@@ -14,6 +14,9 @@ Ce dépôt contient le code du TP, avec les réponses aux questions, les bugs tr
    Il vient du package `Microsoft.AspNetCore.All 2.0.6` (et de ses dépendances), qui a des failles de sécurité connues. C'est normal : .NET Core 2.0 n'est plus maintenu depuis 2018.
 4. **F5** (ou *Déboguer → Démarrer le débogage*). Le navigateur s'ouvre sur la liste des produits.
 
+L'application est execute et accessible sur http://localhost:62929/
+ ![alt text](CapturesEcransTP/image.png)
+
 ## 2. Projets de la solution (Q2)
 
 La solution **`Diayma.sln`** contient **un seul projet** :
@@ -22,7 +25,8 @@ La solution **`Diayma.sln`** contient **un seul projet** :
 |---|---|---|
 | `Diayma` (`Diayma.csproj`) | `P2FixAnAppDotNetCode/` | Application web ASP.NET Core MVC (`Microsoft.NET.Sdk.Web`) |
 
-L'assembly s'appelle `Diayma`, mais le code C# est dans l'espace de noms `P2FixAnAppDotNetCode` (ancien nom du projet).
+L'assembly s'appelle `Diayma`, mais le code C# est dans l'espace de noms `P2FixAnAppDotNetCode`.
+![alt text](CapturesEcransTP/image2.png)
 
 Organisation du projet :
 
@@ -49,6 +53,8 @@ Dans `Diayma.csproj` :
   <TargetFramework>netcoreapp2.0</TargetFramework>
   <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.6" />
 ```
+![alt text](CapturesEcransTP/image3.png)
+
 
 Le projet cible **.NET Core 2.0** (`netcoreapp2.0`) avec ASP.NET Core 2.0.6.
 Le SDK correspondant est le **SDK .NET Core 2.1.202**, le dernier de la famille 2.0, qui inclut les runtimes .NET Core 2.0.9 et ASP.NET Core 2.0.9.
@@ -56,24 +62,11 @@ Il n'y a pas de fichier `global.json`, donc aucune version de SDK n'est imposée
 
 ## 4. Installation du SDK (Q4)
 
-1. Aller sur <https://dotnet.microsoft.com/download/dotnet/2.0>.
-2. Télécharger **SDK 2.1.202 → Windows x64 (Installer)** et l'installer.
-3. Vérifier dans un terminal :
-   ```
-   dotnet --list-sdks       → 2.1.202 [C:\Program Files\dotnet\sdk]
-   dotnet --list-runtimes   → Microsoft.AspNetCore.All 2.0.9, Microsoft.NETCore.App 2.0.9 ...
-   ```
-4. Redémarrer Visual Studio, puis **Générer → Regénérer la solution**.
+La bonne version est installes
+
+![alt text](CapturesEcransTP/image4.png)
 
 ## 5. Dépôt GitHub (Q5)
-
-```bash
-git remote rename origin prof
-git remote add origin https://github.com/<mon-compte>/BoutiqueDiayma2025.git
-git push -u origin master
-```
-
----
 
 ## 6. Bugs trouvés (Q6)
 
@@ -83,15 +76,13 @@ Les bugs ont été reproduits en lançant l'application, puis corrigés. Chaque 
 
 **Reproduction :** ajouter 2 × *XIAOMI Redmi 13C* (88 000) et 1 × *Music Pioneer Bluetooth* (7 000), puis ouvrir le panier.
 
-| | Affiché | Attendu |
-|---|---|---|
-| Sous-totaux | 176 000 et 7 000 | ✔ |
-| **Total** | **95 000** | **183 000** |
-| **Moyenne** | **47 500** | **61 000** (183 000 / 3 articles) |
+![alt text](CapturesEcransTP/image5.png)
 
 Le bandeau du haut affiche aussi « 3 item(s) 95 000 ».
 
 **Cause :** dans `Models/Cart.cs`, `GetTotalValue()` additionne `Product.Price` sans multiplier par `Quantity`. `GetAverageValue()` fait la moyenne par *ligne* et non par *article*.
+
+![alt text](CapturesEcransTP/image6.png)
 
 **Correction :**
 ```csharp
@@ -100,6 +91,8 @@ return GetCartLineList().Sum(x => x.Product.Price * x.Quantity);
 int totalQuantity = GetCartLineList().Sum(x => x.Quantity);
 return totalQuantity > 0 ? GetTotalValue() / totalQuantity : 0.0;
 ```
+
+![alt text](CapturesEcransTP/image7.png)
 
 ### Bug 2 : le stock ne diminue jamais après une commande
 
@@ -143,6 +136,25 @@ Points d'arrêt posés avec **F9** (ou un clic dans la marge grise) :
 | c | `Controllers/OrderController.cs` | 17 | `_cart = pCart;` (constructeur) |
 | d | `Controllers/CartController.cs` | 15 | `_cart = pCart;` (constructeur) |
 | e | `Startup.cs` | 20 | `Configuration = configuration;` (constructeur) |
+
+a. CartSummaryViewComponent ligne 12
+ ![alt text](CapturesEcransTP/image-3.png)
+b. ProductController ligne 15
+![alt text](CapturesEcransTP/image-4.png)
+ 
+c. OrderController ligne 17
+![alt text](CapturesEcransTP/image-6.png)
+ 
+d. CartController ligne 15
+![alt text](CapturesEcransTP/image-1.png)
+ 
+e. Startup ligne 20
+
+![alt text](CapturesEcransTP/image-5.png)
+
+
+ 
+
 
 Au lancement (F5) puis à l'affichage de l'accueil, les points d'arrêt sont atteints dans l'ordre **e → b → a**.
 **c** et **d** ne sont **pas atteints** sur l'écran d'accueil. `OrderController` n'est instancié que sur `/Order` (bouton *Checkout*), et `CartController` que sur `/Cart` ou au clic sur *Ajouter au panier*.
@@ -240,26 +252,24 @@ Espaces de noms jamais visités pour l'accueil : `OrderController`, `CartControl
 
 Le projet contient déjà un profil de publication (`Properties/PublishProfiles/FolderProfile.pubxml`) : **Release, win-x64, autonome**.
 
-**Avec Visual Studio :**
-1. Clic droit sur le projet `Diayma` → **Publier…**
-2. Choisir le profil *FolderProfile* (ou *Dossier* pour un nouveau profil), puis modifier l'emplacement cible si besoin (par défaut `F:\Diayma`).
-3. Vérifier les paramètres : *Configuration* = Release, *Framework cible* = netcoreapp2.0, *Mode de déploiement* = **Autonome**, *Runtime cible* = **win-x64**.
-4. Cliquer **Publier**. Le dossier contient **`Diayma.exe`**, qui embarque le runtime .NET : rien à installer sur la machine cible.
+![alt text](CapturesEcransTP/image10.png)
+ 
 
-**En ligne de commande :**
-```
-cd P2FixAnAppDotNetCode
-dotnet publish -c Release -r win-x64 --self-contained true -o ..\publish
-```
+on a donc lance l'executable :
+
+![alt text](CapturesEcransTP/image11.png)
+
+
 
 **Lancement :** double-cliquer sur `Diayma.exe`. La console affiche `Now listening on: http://localhost:5000`. Ouvrir <http://localhost:5000> dans un navigateur.
+
+![alt text](CapturesEcransTP/image13.png)
 
 ## 10. Lien vers l'exécutable (Q10)
 
 Compresser le dossier de publication (`Diayma-win-x64.zip`), le déposer sur Google Drive ou OneDrive, puis partager le lien en mode *« Tous les utilisateurs disposant du lien »*.
 
-Lien : *(à compléter)*
-
+Lien : https://drive.google.com/drive/folders/1lGkRebkyUQO3HXtkme1LZlpFI_fpmx9Q?usp=sharing
 ---
 
 ## 11. Optionnel
