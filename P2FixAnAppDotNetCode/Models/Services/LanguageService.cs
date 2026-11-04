@@ -24,15 +24,15 @@ namespace P2FixAnAppDotNetCode.Models.Services
         {
             string culture = "";
             // TODO complete the code 
-            // Default language is "en", french is "fr" and spanish is "es".
-            // DONE OD
+            // Default language is "en", french is "fr" and wolof is "wo".
+            // (l'espagnol "es" était proposé mais n'avait aucune traduction : remplacé par le wolof)
             switch (language)
             {
                 case "French":
                     culture = "fr";
                     break;
-                case "Spanish":
-                    culture = "es";
+                case "Wolof":
+                    culture = "wo";
                     break;
                 default:
                     culture = "en";
@@ -46,9 +46,15 @@ namespace P2FixAnAppDotNetCode.Models.Services
         /// </summary>
         public void UpdateCultureCookie(HttpContext context, string culture)
         {
+            // Wolof : textes de l'interface en wolof (UICulture "wo"),
+            // mais on conserve la culture du français ("fr") pour les nombres, dates, etc.
+            RequestCulture requestCulture = culture == "wo"
+                ? new RequestCulture(culture: "fr", uiCulture: "wo")
+                : new RequestCulture(culture);
+
             context.Response.Cookies.Append(
                 CookieRequestCultureProvider.DefaultCookieName,
-                CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)));
+                CookieRequestCultureProvider.MakeCookieValue(requestCulture));
         }
     }
 }
