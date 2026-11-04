@@ -8,12 +8,6 @@ Ce dépôt contient le code du TP, avec les réponses aux questions, les bugs tr
 
 ## 1. Récupération et exécution (Q1)
 
-1. Visual Studio → **Cloner un dépôt** → `https://github.com/devehod/BoutiqueDiayma2025.git`
-2. Ouvrir `Diayma.sln`.
-3. Le bandeau ⚠ *« Cette solution contient des packages présentant des vulnérabilités »* s'affiche : on le ferme.
-   Il vient du package `Microsoft.AspNetCore.All 2.0.6` (et de ses dépendances), qui a des failles de sécurité connues. C'est normal : .NET Core 2.0 n'est plus maintenu depuis 2018.
-4. **F5** (ou *Déboguer → Démarrer le débogage*). Le navigateur s'ouvre sur la liste des produits.
-
 L'application est execute et accessible sur http://localhost:62929/
  ![alt text](CapturesEcransTP/image.png)
 
