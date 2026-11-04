@@ -51,11 +51,20 @@ namespace P2FixAnAppDotNetCode
                     new CultureInfo("fr"),
                 };
 
+                // Langues de l'interface : les mêmes + le wolof.
+                // Le wolof n'est utilisé que pour les textes (UICulture) :
+                // la mise en forme reste celle du français (Culture "fr").
+                var supportedUICultures = new List<CultureInfo>(supportedCultures)
+                {
+                    new CultureInfo("wo-SN"),
+                    new CultureInfo("wo"),
+                };
+
                 opts.DefaultRequestCulture = new RequestCulture("en");
                 // Formatting numbers, dates, etc.
                 opts.SupportedCultures = supportedCultures;
                 // UI strings that we have localized.
-                opts.SupportedUICultures = supportedCultures;
+                opts.SupportedUICultures = supportedUICultures;
             });
         }
 
