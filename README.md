@@ -64,8 +64,6 @@ La bonne version est installes
 
 ## 6. Bugs trouvés (Q6)
 
-Les bugs ont été reproduits en lançant l'application, puis corrigés. Chaque correction est commentée `// BUG corrigé` dans le code.
-
 ### Bug 1 : le total du panier ignore la quantité
 
 **Reproduction :** ajouter 2 × *XIAOMI Redmi 13C* (88 000) et 1 × *Music Pioneer Bluetooth* (7 000), puis ouvrir le panier.
